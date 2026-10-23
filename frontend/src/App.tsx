@@ -8,7 +8,7 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [tasksError, setTasksError] = useState('')
-  const [addError, setAddError] = useState('')
+  const [addError] = useState('')
   const [isAdding, setIsAdding] = useState(false)
 
   const [backendStatus, setBackendStatus] = useState<
@@ -244,7 +244,7 @@ async function handleDeleteTask(id: string) {
                   />
 
                   <span
-                    className={`min-w-0 flex-1 break-words ${
+                    className={`min-w-0 flex-1 wrap-break-word ${
                       task.completed
                         ? 'text-slate-400 line-through'
                         : 'text-slate-700'
