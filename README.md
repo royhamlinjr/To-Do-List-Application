@@ -1,13 +1,19 @@
 # To-Do App
 
-A full-stack To-Do application built with React, TypeScript, Tailwind CSS, FastAPI, and MongoDB. Users can create tasks, view saved tasks, mark them as completed, and delete them.
+A full-stack To-Do application built with React, TypeScript, Tailwind CSS, FastAPI, and MongoDB Atlas. Users can create tasks, view saved tasks, mark tasks as completed or pending, and delete tasks with persistent database storage.
+
+## Live Demo
+
+- **Frontend:** https://frontend-orpin-xi-37.vercel.app/
+- **Backend Health Check:** https://to-do-list-application-m6h6.onrender.com/health/db
+- **GitHub Repository:** https://github.com/royhamlinjr/To-Do-List-Application
 
 ## Features
 
 - Create and view tasks
 - Mark tasks as completed or pending
 - Delete tasks
-- Store tasks persistently in MongoDB
+- Persist task data in MongoDB Atlas
 - Display task statistics
 - Show backend connection status
 - Validate empty task submissions
@@ -52,20 +58,20 @@ To_Do_App/
 
 ## Prerequisites
 
-- Python 3.11 or a compatible version supported by the backend dependencies
+- Python version compatible with the backend dependencies
 - Node.js and npm
 - A MongoDB database, such as MongoDB Atlas
 
 ## Setup Instructions
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
-git clone <your-github-repository-url>
-cd To_Do_App
+git clone https://github.com/royhamlinjr/To-Do-List-Application.git
+cd To-Do-List-Application
 ```
 
-### 2. Configure the backend
+### 2. Configure the Backend
 
 ```powershell
 cd backend
@@ -74,52 +80,58 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the `backend` directory using `.env.example` as a reference. Configure your MongoDB connection string and any required database settings.
+Create a `.env` file inside the `backend` directory using `.env.example` as a reference. Add your MongoDB connection string and the database configuration required by the application.
 
-Never commit your real database credentials.
+Never commit real database credentials.
 
-### 3. Start the backend
+### 3. Start the Backend
 
 From the `backend` directory, run:
 
-```powershell
+```bash
 uvicorn main:app --reload
 ```
 
-Backend API: `http://127.0.0.1:8000`
+- Backend URL: http://127.0.0.1:8000
+- Interactive API documentation: http://127.0.0.1:8000/docs
+- Database health check: http://127.0.0.1:8000/health/db
 
-Interactive API documentation: `http://127.0.0.1:8000/docs`
+### 4. Configure the Frontend
 
-### 4. Configure the frontend
-
-Open a separate terminal:
+Open a separate terminal and run:
 
 ```powershell
 cd frontend
 npm install
 ```
 
-Create a `.env` file in the `frontend` directory using `.env.example` as a reference.
+Create a `.env` file inside the `frontend` directory using `.env.example` as a reference.
+
+Add the following configuration for local development:
 
 ```dotenv
 VITE_API_URL=http://127.0.0.1:8000
 ```
 
-### 5. Start the frontend
+### 5. Start the Frontend
 
-```powershell
+From the `frontend` directory, run:
+
+```bash
 npm run dev
 ```
 
-Open the local URL displayed in the terminal, usually `http://localhost:5173`.
+Open the local URL displayed in the terminal, usually http://localhost:5173.
 
-### 6. Build for production
+### 6. Build for Production
 
-From the `frontend` directory:
+From the `frontend` directory, run:
 
-```powershell
+```bash
 npm run build
 ```
+
+The production build is generated in the `dist` directory.
 
 ## API Endpoints
 
@@ -129,15 +141,24 @@ npm run build
 | GET | `/health/db` | Check database connectivity |
 | GET | `/tasks` | Retrieve tasks |
 | POST | `/tasks` | Create a task |
-| PATCH | `/tasks/{task_id}` | Update completion status |
+| PATCH | `/tasks/{task_id}` | Update task completion status |
 | DELETE | `/tasks/{task_id}` | Delete a task |
 
 ## Environment Variables
 
-- Backend: MongoDB connection string and database configuration required by the application.
-- Frontend: `VITE_API_URL`, the base URL of the backend API.
+**Backend:** Configure the MongoDB connection string and any database settings required by the application in `backend/.env`.
 
-Keep real credentials in local environment files and out of version control.
+**Frontend:** Set `VITE_API_URL` to the backend's base URL.
+
+For local development:
+
+```dotenv
+VITE_API_URL=http://127.0.0.1:8000
+```
+
+For production, configure `VITE_API_URL` in the Vercel project environment variables using the deployed Render backend URL.
+
+Keep real credentials in environment files and exclude them from version control.
 
 ## Future Improvements
 
@@ -145,8 +166,8 @@ Keep real credentials in local environment files and out of version control.
 - Due dates and priorities
 - Task filtering and search
 - Automated tests
-- Deployment configuration
 
 ## Author
 
-Roy Hamlin A
+**Roy Hamlin A**
+
