@@ -2,6 +2,13 @@
 const API_URL =
   import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
 
+export interface Task {
+  id: string
+  title: string
+  completed: boolean
+  created_at?: string
+}
+
 export async function checkBackendConnection(): Promise<boolean> {
   const response = await fetch(`${API_URL}/health/db`)
 
@@ -10,14 +17,6 @@ export async function checkBackendConnection(): Promise<boolean> {
   }
 
   return true
-}
-
-
-export interface Task {
-  id: string
-  title: string
-  completed: boolean
-  created_at?: string
 }
 
 export async function getTasks(): Promise<Task[]> {
