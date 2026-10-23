@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react'
-import { checkBackendConnection, getTasks } from './services/api'
+import { checkBackendConnection, createTask, getTasks } from './services/api'
 import type { Task } from './services/api'
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [tasksError, setTasksError] = useState('')
+  const [addError, setAddError] = useState('')
 
   const [backendStatus, setBackendStatus] = useState<
     'checking' | 'connected' | 'disconnected'
@@ -35,23 +36,23 @@ function App() {
       })
   }, [])
 
-  // Add a task locally for now
-  function handleAddTask() {
-    const trimmedTitle = title.trim()
+async function handleAddTask() {
+  const trimmedTitle = title.trim()
 
-    if (!trimmedTitle) {
-      return
-    }
-
-    const newTask: Task = {
-      id: Date.now().toString(),
-      title: trimmedTitle,
-      completed: false,
-    }
-
-    setTasks((currentTasks) => [...currentTasks, newTask])
-    setTitle('')
+  if (!trimmedTitle) {
+    return
   }
+
+  try {
+    const newTask = await createTask(trimmedTitle)
+
+    setTasks((currentTasks) => [newTask, ...currentTasks])
+    setTitle('')
+    setAddError('')
+  } catch {
+    setAddError('Unable to save task. Please check the backend and try again.')
+  }
+}
 
   // Toggle task completion locally for now
   function handleToggleTask(id: string) {
@@ -161,6 +162,11 @@ function App() {
               Add Task
             </button>
           </form>
+          {addError && (
+            <p className="mt-3 text-sm text-red-600" role="alert">
+              {addError}
+            </p>
+          )}
         </section>
 
         {/* Task list */}
