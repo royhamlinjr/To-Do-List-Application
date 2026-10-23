@@ -39,11 +39,14 @@ function handleToggleTask(id: number) {
   )
 }
 
-function handleDeleteTask(id: number) {
+function handleDeleteTask(id: number) { 
   setTasks((currentTasks) =>
     currentTasks.filter((task) => task.id !== id)
   )
 }
+
+const completedCount = tasks.filter((task) => task.completed).length
+const pendingCount = tasks.length - completedCount
 
 
   return (
@@ -57,6 +60,31 @@ function handleDeleteTask(id: number) {
             Organize your day, one task at a time.
           </p>
         </header>
+
+        
+        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="rounded-xl bg-white p-4 shadow-sm">
+            <p className="text-sm text-slate-500">Total tasks</p>
+            <p className="mt-1 text-2xl font-bold text-slate-800">
+              {tasks.length}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-white p-4 shadow-sm">
+            <p className="text-sm text-slate-500">Pending</p>
+            <p className="mt-1 text-2xl font-bold text-amber-600">
+              {pendingCount}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-white p-4 shadow-sm">
+            <p className="text-sm text-slate-500">Completed</p>
+            <p className="mt-1 text-2xl font-bold text-green-600">
+              {completedCount}
+            </p>
+          </div>
+        </div>
+
 
         <section className="rounded-xl bg-white p-5 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold text-slate-800">
@@ -103,9 +131,16 @@ function handleDeleteTask(id: number) {
           </div>
 
           {tasks.length === 0 ? (
-            <p className="py-8 text-center text-slate-500">
-              No tasks yet. Add your first task above.
+            
+          <div className="py-10 text-center">
+            <p className="text-base font-medium text-slate-700">
+              No tasks yet
             </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Add your first task above to get started.
+            </p>
+          </div>
+
           ) : (
             
           <ul className="divide-y divide-slate-100">
