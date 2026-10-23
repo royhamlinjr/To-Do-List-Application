@@ -28,6 +28,24 @@ function App() {
     setTitle('')
   }
 
+  
+function handleToggleTask(id: number) {
+  setTasks((currentTasks) =>
+    currentTasks.map((task) =>
+      task.id === id
+        ? { ...task, completed: !task.completed }
+        : task
+    )
+  )
+}
+
+function handleDeleteTask(id: number) {
+  setTasks((currentTasks) =>
+    currentTasks.filter((task) => task.id !== id)
+  )
+}
+
+
   return (
     <main className="min-h-screen bg-slate-100 px-4 py-10">
       <div className="mx-auto max-w-2xl">
@@ -76,9 +94,12 @@ function App() {
               Your tasks
             </h2>
 
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
-              {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'}
-            </span>
+            
+        <span className="text-sm text-slate-500">
+          {tasks.filter((task) => task.completed).length} of{' '}
+          {tasks.length} completed
+        </span>
+
           </div>
 
           {tasks.length === 0 ? (
@@ -86,13 +107,42 @@ function App() {
               No tasks yet. Add your first task above.
             </p>
           ) : (
-            <ul className="divide-y divide-slate-100">
-              {tasks.map((task) => (
-                <li key={task.id} className="py-4 text-slate-700">
+            
+          <ul className="divide-y divide-slate-100">
+            {tasks.map((task) => (
+              <li
+                key={task.id}
+                className="flex items-center gap-3 py-4"
+              >
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => handleToggleTask(task.id)}
+                  aria-label={`Mark ${task.title} as completed`}
+                  className="size-4 cursor-pointer accent-blue-600"
+                />
+
+                <span
+                  className={`min-w-0 flex-1 break-words ${
+                    task.completed
+                      ? 'text-slate-400 line-through'
+                      : 'text-slate-700'
+                  }`}
+                >
                   {task.title}
-                </li>
-              ))}
-            </ul>
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => handleDeleteTask(task.id)}
+                  className="shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+
           )}
         </section>
       </div>
