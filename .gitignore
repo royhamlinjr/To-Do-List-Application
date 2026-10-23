@@ -1,22 +1,20 @@
-@"
 # Python
 __pycache__/
 *.py[cod]
-venv/
 backend/venv/
+backend/.venv/
+
+# Environment secrets
 .env
 .env.*
 !.env.example
+backend/.env
+frontend/.env
 
 # Node.js
 node_modules/
-dist/
-frontend/.env
-frontend/.env.*
-!frontend/.env.example
+frontend/dist/
 
-# Editors and operating systems
+# Build and editor files
+*.log
 .vscode/
-.DS_Store
-Thumbs.db
-"@ | Set-Content .gitignore
