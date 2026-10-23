@@ -9,6 +9,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [tasksError, setTasksError] = useState('')
   const [addError, setAddError] = useState('')
+  const [isAdding, setIsAdding] = useState(false)
 
   const [backendStatus, setBackendStatus] = useState<
     'checking' | 'connected' | 'disconnected'
@@ -39,21 +40,24 @@ function App() {
 async function handleAddTask() {
   const trimmedTitle = title.trim()
 
-  if (!trimmedTitle) {
+  if (!trimmedTitle || isAdding) {
     return
   }
+
+  setIsAdding(true)
+  setTasksError('')
 
   try {
     const newTask = await createTask(trimmedTitle)
 
-    setTasks((currentTasks) => [newTask, ...currentTasks])
+    setTasks((currentTasks) => [...currentTasks, newTask])
     setTitle('')
-    setAddError('')
   } catch {
-    setAddError('Unable to save task. Please check the backend and try again.')
+    setTasksError('Unable to add task. Please try again.')
+  } finally {
+    setIsAdding(false)
   }
 }
-
 
 async function handleToggleTask(id: string) {
   const task = tasks.find((item) => item.id === id)
@@ -78,8 +82,6 @@ async function handleToggleTask(id: string) {
     )
   }
 }
-
-
 
 async function handleDeleteTask(id: string) {
   try {
@@ -181,12 +183,14 @@ async function handleDeleteTask(id: string) {
               className="min-w-0 flex-1 rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
 
-            <button
-              type="submit"
-              className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
-            >
-              Add Task
-            </button>
+          <button
+            type="submit"
+            disabled={isAdding || !title.trim()}
+            className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isAdding ? 'Adding...' : 'Add Task'}
+          </button>
+
           </form>
           {addError && (
             <p className="mt-3 text-sm text-red-600" role="alert">
