@@ -11,3 +11,22 @@ export async function checkBackendConnection(): Promise<boolean> {
 
   return true
 }
+
+
+export interface Task {
+  id: string
+  title: string
+  completed: boolean
+  created_at?: string
+}
+
+export async function getTasks(): Promise<Task[]> {
+  const response = await fetch(`${API_URL}/tasks`)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch tasks')
+  }
+
+  return response.json() as Promise<Task[]>
+}
+
