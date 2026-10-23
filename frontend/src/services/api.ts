@@ -64,3 +64,14 @@ export async function updateTask(
 
   return response.json() as Promise<Task>
 }
+
+
+export async function deleteTask(id: string): Promise<void> {
+  const response = await fetch(`${API_URL}/tasks/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to delete task')
+  }
+}
