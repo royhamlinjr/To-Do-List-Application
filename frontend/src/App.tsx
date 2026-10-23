@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react'
-import { checkBackendConnection, createTask, getTasks } from './services/api'
+import { checkBackendConnection, createTask, getTasks, updateTask, } from './services/api'
 import type { Task } from './services/api'
 
 function App() {
@@ -54,16 +54,31 @@ async function handleAddTask() {
   }
 }
 
-  // Toggle task completion locally for now
-  function handleToggleTask(id: string) {
+
+async function handleToggleTask(id: string) {
+  const task = tasks.find((item) => item.id === id)
+
+  if (!task) {
+    return
+  }
+
+  try {
+    const updatedTask = await updateTask(id, !task.completed)
+
     setTasks((currentTasks) =>
-      currentTasks.map((task) =>
-        task.id === id
-          ? { ...task, completed: !task.completed }
-          : task
+      currentTasks.map((item) =>
+        item.id === id ? updatedTask : item
       )
     )
+
+    setTasksError('')
+  } catch {
+    setTasksError(
+      'Unable to update task. Please check the backend.'
+    )
   }
+}
+
 
   // Delete a task locally for now
   function handleDeleteTask(id: string) {
